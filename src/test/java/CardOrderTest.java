@@ -22,7 +22,7 @@ public class CardOrderTest {
        driver.quit();
        driver = null;
     }
-    @Test void shouldFillingPersonalData(){
+    @Test void shouldFillingPersonalData() throws InterruptedException {
         driver.get("http://localhost:9999");
         driver.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Старк Тони");
         driver.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79997775555");
@@ -32,6 +32,18 @@ public class CardOrderTest {
         String actual = driver.findElement(By.cssSelector("[data-test-id=order-success]")).getText().trim();
 
         Assertions.assertEquals(expected, actual);
+        Thread.sleep(4000);
     }
+    @Test void shouldFillingInvalidName() throws InterruptedException {
+        driver.get("http://localhost:9999");
+        driver.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Tony Stark");
+        driver.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79997775555");
+        driver.findElement(By.cssSelector("[data-test-id=agreement]")).click();
+        driver.findElement(By.className("button__text")).click();
+        String expected = "Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.";
+        String actual = driver.findElement(By.className("input__sub")).getText();
 
+        Assertions.assertEquals(expected, actual);
+        Thread.sleep(4000);
+    }
 }
