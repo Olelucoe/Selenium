@@ -1,26 +1,31 @@
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeDriverService;
+import org.openqa.selenium.chrome.ChromeOptions;
 
-import java.io.File;
 
 public class CardOrderTest {
    private WebDriver driver;
 
    @BeforeAll
    static void setUpAll(){
-       System.setProperty(
-               "webdriver.chrome.driver", "C:\\Users\\karls\\IdeaProjects\\SeleniumHomework\\Driver\\chromedriver.exe");
+       WebDriverManager.chromedriver().setup();
+
    }
     @BeforeEach
-    void setUp(){driver = new ChromeDriver();}
+    void setUp() {
+        ChromeOptions options = new ChromeOptions();
+        options.setHeadless(true);
+
+        driver = new ChromeDriver(options);
+    }
 
     @AfterEach
     void tearDown(){
        driver.quit();
-       driver = null;
+
     }
     @Test void shouldFillingPersonalData() throws InterruptedException {
         driver.get("http://localhost:9999");
